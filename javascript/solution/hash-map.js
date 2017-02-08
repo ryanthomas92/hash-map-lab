@@ -38,7 +38,7 @@ HashMap.prototype = {
     if (this.h_array[arr_pos].find(key) === "Key/Value pair not found"){
       this.h_array[arr_pos].prepend(key, value);
     } else {
-      return "Key already exists.";
+      throw "Key already exists.";
     }
   },
 
