@@ -11,7 +11,7 @@ class SinglyLinkedList
     elsif head.nil?
       @head = nil
     else
-      @head = Node.new(head)
+      @head = Node.new(head) # hash with key and data
     end
   end
 
@@ -21,22 +21,31 @@ class SinglyLinkedList
     elsif new_head.nil?
       @head = nil
     else
-      raise ArgumentError, 'head must be a Node or nil'
+      raise ArgumentError, 'List head must be a Node or nil'
     end
   end
 
   def inspect
-    if self.empty?
-      return "nil (head)"
-    end
-    arr = ["#{@head.data} (head)"]
+    return "nil (head)" if self.empty?
+    arr = ["#{@head.key}: #{@head.data} (head)"]
     current_node = @head.next
     until current_node.nil? do
-      arr << "#{current_node.data}"
+      arr << "#{current_node.key}: #{current_node.data}"
       current_node = current_node.next
     end
     arr << "nil"
     arr.join(' -> ')
+  end
+
+  def to_a
+    return [] if self.empty?
+    result = [@head]
+    current_node = @head.next
+    until current_node.nil? do
+      result << current_node
+      current_node = current_node.next
+    end
+    result
   end
 
   def empty?
@@ -95,6 +104,15 @@ class SinglyLinkedList
     false
   end
 
+  def find_by_key key
+    current_node = @head
+    until current_node.nil? do
+      return current_node if current_node.key == key
+      current_node = current_node.next
+    end
+    false
+  end
+
   def delete node
     return if self.empty?
     if @head == node
@@ -105,6 +123,24 @@ class SinglyLinkedList
     current_node = @head.next
     until current_node.nil? do
       if current_node == node
+        previous_node.next = current_node.next
+        return
+      end
+      previous_node = current_node
+      current_node = current_node.next
+    end
+  end
+
+  def delete_with_key key
+    return if self.empty?
+    if @head.key == key
+      @head = @head.next
+      return
+    end
+    previous_node = @head
+    current_node = @head.next
+    until current_node.nil? do
+      if current_node.key == key
         previous_node.next = current_node.next
         return
       end
@@ -169,6 +205,10 @@ class SinglyLinkedList
 
   private
   def nodify node_or_data
-    node_or_data.instance_of?(Node) ? node_or_data : Node.new(node_or_data)
+    if node_or_data.instance_of?(Node)
+      node_or_data
+    else
+      Node.new(node_or_data)  # hash with key and data
+    end
   end
 end

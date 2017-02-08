@@ -1,4 +1,4 @@
-# starter-code/hash-map.rb
+# solution/hash-map.rb
 
 require_relative '../lib/node'
 require_relative '../lib/singly_linked_list'
@@ -24,7 +24,12 @@ class HashMap
   def put(key, value)
     arr_pos = to_hash(key)
     list = @array[arr_pos]
-    list.insert_at_start({ key: key, data: value })
+    node = list.find_by_key key
+    if node
+      raise(ArgumentError, "Key already exists.")
+    else
+      list.insert_at_start({ key: key, data: value })
+    end
   end
 
   def get_value(key)
@@ -45,11 +50,18 @@ class HashMap
   end
 
 
-
-  #
   # TODO: Implement `set` function here!
   # It should change value associated with the `key` passed in, to the `value` passed in.
-
+  def set(key, value)
+    arr_pos = to_hash(key)
+    list = @array[array_pos]
+    node = list.find_by_key(key)
+    if node
+      node.data = value
+    else
+      self.put(key, value)
+    end
+  end
 
   def keyArr
     key_arr = []
