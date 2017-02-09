@@ -8,6 +8,47 @@ Location: SF
 
 # Hash Maps
 
+### Interview Question
+
+Given an array of numbers called `A` and a target number `x`, write a function to determine if there is a pair of numbers in `A`  that, multiplied together,  equal `x`. If there is one or more pair with the product `x`, return one pair. If there are no pairs with a product `x`, return `false`.
+
+<details><summary>Input/Output Examples</summary>
+Input: `[1,2,3,4,5,6]` and `12`  
+Output:  `{a: 3, b:4}` or `{a:2, b:6}` or `{a:4, b:3}` or `{a:6, b:2}`  
+
+Input: `[1,2,3,4,5,6]` and `14`  
+Output: `false`  
+</details>
+
+<details><summary>A straightforward solution</summary>
+```
+def find_product_pair ( A, x ):
+  for index i in A:
+    for index j in A, starting from i+1:
+       if A[i] * A[j] == x
+          return { a: A[i], b: A[j] }
+  return false
+```
+This solution is O(n<sup>2</sup>) in time because of the nested looping!
+It is O(1) in space!
+</details>
+
+
+<details><summary>A solution that takes advantage of hash maps!</summary>
+```
+def find_product_pair ( A, x ):
+  product_hash = {}
+  for num in A:
+    if num not in product_hash:
+      product_hash[num] = x/num
+    else:
+      return { a: num, b: product_hash[num] }
+  return false
+```
+This solution is O(n) in time because we loop once and take advantage of hash maps' O(1) insert and search!
+This solution is O(n) in space because we have to add storage for the extra hash. 
+</details>
+
 ### Why is this important?
 <!-- framing the "why" in big-picture/real world examples -->
 *This workshop is important because:*
